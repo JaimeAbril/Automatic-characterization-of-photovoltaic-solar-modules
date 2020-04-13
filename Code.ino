@@ -1,6 +1,6 @@
 #include <SPI.h>
 
-byte addresspot1 = B00010000;
+byte addresspot1 = B00010000;   
 byte addresspot0 = B00000000;
 int CS= 10;
 int aux = 0;
@@ -16,10 +16,13 @@ pinMode (CS, OUTPUT);
 Serial.println("CLEARSHEET");
 Serial.println("LABEL,Date,Time,Timer,Voltage,Current");
 SPI.begin();
+
 }
 
 void loop()
 {
+  delay(6500);
+  Serial.println("BEEP");
 for (int i = 0; i <= 256; i++)
 {
   int j=256-i;
@@ -28,12 +31,15 @@ for (int i = 0; i <= 256; i++)
   aux++;
   if (aux%10 != 0){delay(10);}
   if (aux%10 == 0){
-    for (int i = 0; i <= 10; i++){
+    for (int i = 0; i <= 5; i++){
       int cur = analogRead(analogPin1);
       int vol = analogRead(analogPin);
       voltage =conversionvoltage(vol);
       current = conversioncurrent(cur);
-      Serial.println( (String) "DATA,DATE,TIME,TIMER," + voltage + + current + ",AUTOSCROLL_20" );
+      Serial.print( (String) "DATA,DATE,TIME,TIMER," );
+      Serial.print(voltage);
+      Serial.print(",");
+      Serial.println(current);
       delay(1000);}
     }
   if (aux >= 256){
@@ -48,12 +54,15 @@ for (int i = 256; i >= 0; i--)
   aux++;
   if (aux%10 != 0){delay(10);}
   if (aux%10 == 0){
-    for (int i = 0; i <= 10; i++){
+    for (int i = 0; i <= 5; i++){
       int cur = analogRead(analogPin1);
       int vol = analogRead(analogPin);
       voltage =conversionvoltage(vol);
       current = conversioncurrent(cur);
-      Serial.println( (String) "DATA,DATE,TIME,TIMER," + voltage + + current + ",AUTOSCROLL_20" );
+      Serial.print( (String) "DATA,DATE,TIME,TIMER," );
+      Serial.print(voltage);
+      Serial.print(",");
+      Serial.println(current);
       delay(1000);}
     }
   if (aux >= 256){
@@ -86,4 +95,3 @@ float conversioncurrent(float x){
   int currentmA = (10*volts/0.265);
   return (currentmA);
 }
-
