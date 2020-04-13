@@ -5,14 +5,16 @@ byte addresspot0 = B00000000;
 int CS= 10;
 int aux = 0;
 const int analogPin = A5;
-float value;
+const int analogPin1 = A4;
+float voltage;
+float current;
 
 void setup()
 {
 Serial.begin(9600);
 pinMode (CS, OUTPUT);
 Serial.println("CLEARSHEET");
-Serial.println("LABEL,Fecha,Hora,Cronometro,ValorPin");
+Serial.println("LABEL,Date,Time,Timer,Voltage,Current");
 SPI.begin();
 }
 
@@ -26,10 +28,13 @@ for (int i = 0; i <= 256; i++)
   aux++;
   if (aux%10 != 0){delay(10);}
   if (aux%10 == 0){
-    delay(2000);
-    int val = analogRead(analogPin);
-    value =conversion(val);
-    Serial.println( (String) "DATA,DATE,TIME,TIMER," + value + ",AUTOSCROLL_20" );
+    for (int i = 0; i <= 10; i++){
+      int cur = analogRead(analogPin1);
+      int vol = analogRead(analogPin);
+      voltage =conversionvoltage(vol);
+      current = conversioncurrent(cur);
+      Serial.println( (String) "DATA,DATE,TIME,TIMER," + voltage + + current + ",AUTOSCROLL_20" );
+      delay(1000);}
     }
   if (aux >= 256){
     aux = 0;}
@@ -43,10 +48,13 @@ for (int i = 256; i >= 0; i--)
   aux++;
   if (aux%10 != 0){delay(10);}
   if (aux%10 == 0){
-    delay(2000);
-    int val = analogRead(analogPin);
-    value =conversion(val);
-    Serial.println( (String) "DATA,DATE,TIME,TIMER," + value + ",AUTOSCROLL_20" );
+    for (int i = 0; i <= 10; i++){
+      int cur = analogRead(analogPin1);
+      int vol = analogRead(analogPin);
+      voltage =conversionvoltage(vol);
+      current = conversioncurrent(cur);
+      Serial.println( (String) "DATA,DATE,TIME,TIMER," + voltage + + current + ",AUTOSCROLL_20" );
+      delay(1000);}
     }
   if (aux >= 256){
     aux = 0;}
@@ -69,6 +77,13 @@ int digitalPot0(int valuepot0)
   digitalWrite(CS, HIGH);
 }
 
-float conversion(float x){
+float conversionvoltage(float x){
   return (5*x/1023);
 }
+
+float conversioncurrent(float x){
+  int volts = (5*x/1023);
+  int currentmA = (10*volts/0.265);
+  return (currentmA);
+}
+
