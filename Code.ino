@@ -114,6 +114,8 @@ int digitalPot0(int valuepot0)
   digitalWrite(CS, HIGH);
 }
 
+//IN CASE YOU WANT TO LEARN MORE ABOUT MCP4251: http://www.learningaboutelectronics.com/Articles/MCP4231-dual-digital-potentiometer-circuit.php
+
 float conversionvoltage(float x){
   return (5*x/1023);
 }
@@ -129,14 +131,14 @@ float getpower(float x, float y){
   return(x*y);
   }
 
-float brightness(float ilum){
+float brightness(float ilum){   //IN CASE YOU WANT TO LEARN MORE ABOUT LDR: https://www.luisllamas.es/medir-nivel-luz-con-arduino-y-fotoresistencia-ldr/
   ilum = ((long)(1024-V)*A*10)/((long)B*Rc*V);  //use if LDR is between GND and A0
   // ilum = (V*A*10)/(B*Rc*(1023-V));    //use if LDR is between A0 and Vcc
   
   return (ilum);
   }
   
-void getTemp(float * t){
+void getTemp(float * t){    //IN CASE YOU WANT TO LEARN MORE ABOUT NTC: https://www.jameco.com/Jameco/workshop/techtip/temperature-measurement-ntc-thermistors.html
   const int analogPin = A2; 
   const float invBeta = 1.00 / 3997.00;  
 
